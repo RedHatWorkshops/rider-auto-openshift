@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring" 
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+                           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <!-- Set username and password to values you set in etc/user.properties -->
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent" >
+    <property name="brokerURL" value="tcp://localhost:61616"/>
+    <property name="userName" value="admin"/>
+    <property name="password" value="admin"/>
+  </bean>
+
+  <cxf:cxfEndpoint id="orderEndpoint"
+                   address="http://localhost:8182/cxf/order"
+                   serviceClass="org.fusesource.camel.ws.OrderEndpoint"/>
+  
+  <camelContext id="rider-auto-ws" trace="true" xmlns="http://camel.apache.org/schema/spring">
+    <route id="ws-to-jms">
+      <from uri="cxf:bean:orderEndpoint" />  
+      <setBody>
+        <simple>${in.body[0]}</simple>
+      </setBody>   
+      <inOnly uri="activemq:incomingOrders" />
+      <transform>
+        <constant>OK</constant>
+      </transform>
+    </route>
+  </camelContext>
+
+</beans>

@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <!-- Set username and password to values you set in etc/user.properties -->
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent" >
+    <property name="brokerURL" value="tcp://localhost:61616"/>
+    <property name="userName" value="admin"/>
+    <property name="password" value="admin"/>
+  </bean>
+
+  <camelContext  id="rider-auto-normalizer" trace="true" xmlns="http://camel.apache.org/schema/spring">
+    <route id="normalize-message-data">
+      <from uri="activemq:incomingOrders" />
+      <doTry>
+        <choice>
+          <when>
+            <simple>${header.CamelFileName} regex '^.*xml$'</simple>
+            <unmarshal>
+              <jaxb contextPath="org.fusesource.camel.model" />
+            </unmarshal>  
+          </when>
+          <when>
+            <simple>${header.CamelFileName} regex '^.*(csv|csl)$'</simple>
+            <unmarshal>
+              <bindy packages="org.fusesource.camel.model" type="Csv" />
+            </unmarshal>
+            <convertBodyTo type="org.fusesource.camel.model.Order"/>
+          </when>
+        </choice>            
+        <to uri="activemq:orders" />
+      </doTry>
+      <doCatch>
+        <exception>java.lang.Exception</exception>
+        <log message="Unable to parse message! Routing to invalid orders queue."/>
+        <to uri="activemq:invalidOrders"/>
+      </doCatch>
+    </route>
+  </camelContext>
+
+</beans>

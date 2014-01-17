@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features name="rider-auto-osgi" 
+  xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">    
+    <feature version="${project.version}" name="rider-auto-osgi">
+        <feature>camel-core</feature>
+        <feature>camel-spring</feature>
+        <feature>activemq-camel</feature>
+        <feature>camel-jaxb</feature>
+        <feature>camel-bindy</feature>
+        <feature>camel-cxf</feature>
+        <bundle>mvn:org.fusesource.examples/rider-auto-common/${project.version}</bundle>
+        <bundle>mvn:org.fusesource.examples/rider-auto-file/${project.version}</bundle>    
+        <bundle>mvn:org.fusesource.examples/rider-auto-ws/${project.version}</bundle>    
+        <bundle>mvn:org.fusesource.examples/rider-auto-normalizer/${project.version}</bundle>    
+        <bundle>mvn:org.fusesource.examples/rider-auto-backend/${project.version}</bundle>                                            
+    </feature>
+</features>
