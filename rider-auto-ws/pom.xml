@@ -44,23 +44,26 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-cxf</artifactId>
+      <scope>runtime</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
-    </dependency>    
+      <scope>runtime</scope>
+    </dependency>
     
-    <!-- Blueprint container support -->
+    <!-- Spring container support -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
+      <scope>runtime</scope>
     </dependency>  
 
     <!-- ActiveMQ connectivity for Camel -->            
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-camel</artifactId>
+      <scope>runtime</scope>
     </dependency>      
     
     <dependency>
@@ -91,16 +94,6 @@
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-spring</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-kahadb-store</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
