@@ -1,6 +1,9 @@
 package org.fusesource.camel.test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
@@ -8,7 +11,7 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.model.ModelCamelContext;
-import org.apache.camel.test.junit4.CamelSpringJUnit4ClassRunner;
+import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,8 +56,11 @@ public class NormalizerUnitTest {
   public void testRiderAutoNormalizerXmlRoute() throws Exception {
     
     String id = UUID.randomUUID().toString();
+    Map<String, Object> headers = new HashMap<String, Object>();
+    headers.put("JMSCorrelationID", id);
+    headers.put("CamelFileName", "message.xml");
     String body = "<order><name>motor</name><amount>1</amount></order>";
-    amqIncomingOrdersPT.sendBodyAndHeader(body, "JMSCorrelationID", id);
+    amqIncomingOrdersPT.sendBodyAndHeaders(body, headers);
     mockAmqOrdersEP.expectedMessageCount(1);
     mockAmqOrdersEP.expectedHeaderReceived("JMSCorrelationID", id);
     MockEndpoint.assertIsSatisfied(mockAmqOrdersEP);
@@ -65,8 +71,11 @@ public class NormalizerUnitTest {
   public void testRiderAutoNormalizerCsvRoute() throws Exception {
     
     String id = UUID.randomUUID().toString();
+    Map<String, Object> headers = new HashMap<String, Object>();
+    headers.put("JMSCorrelationID", id);
+    headers.put("CamelFileName", "message.csv");
     String body = "name,amount\nbrake pad,2";
-    amqIncomingOrdersPT.sendBodyAndHeader(body, "JMSCorrelationID", id);
+    amqIncomingOrdersPT.sendBodyAndHeaders(body, headers);
     mockAmqOrdersEP.expectedMessageCount(1);
     mockAmqOrdersEP.expectedHeaderReceived("JMSCorrelationID", id);
     MockEndpoint.assertIsSatisfied(mockAmqOrdersEP);
@@ -77,8 +86,11 @@ public class NormalizerUnitTest {
   public void testRiderAutoNormalizerInvalidXmlRoute() throws Exception {
     
     String id = UUID.randomUUID().toString();
+    Map<String, Object> headers = new HashMap<String, Object>();
+    headers.put("JMSCorrelationID", id);
+    headers.put("CamelFileName", "message.xml");
     String body = "<foo></bar>";
-    amqIncomingOrdersPT.sendBodyAndHeader(body, "JMSCorrelationID", id);
+    amqIncomingOrdersPT.sendBodyAndHeaders(body, headers);
     mockAmqOrdersEP.expectedMessageCount(0);
     mockAmqInvalidOrdersEP.expectedMessageCount(1);
     mockAmqInvalidOrdersEP.expectedHeaderReceived("JMSCorrelationID", id);

@@ -16,24 +16,9 @@ according to the steps below.
 Setup
 ==============================
 
-- Install Eclipse 3.6.2
-    - Download distribution from http://www.eclipse.org. 
-    - Unzip the downloaded Eclipse distribution to a location on your hard disk 
-    that you find suitable.
-
-- Install Apache Maven 3+
-    - Download distribution from http://maven.apache.org. 
-    - Unzip the downloaded Maven distribution to a location on your hard disk
-    that you find suitable.
-    - configure this location as the environment variable MAVEN_HOME
-    - add MAVEN_HOME/bin to your PATH environment variable
-
-- Install Fuse IDE for Camel
-    - Follow the instructions at: 
-      http://fusesource.com/docs/ide/2.0/install_guide/front.html
-
-- Install JBoss Fuse  6.0.0
-    - Download from https://access.redhat.com/jbossnetwork/ (registration required) and extract
+- Install JBoss Developer Studio 7.1.1 [https://www.jboss.org/products/devstudio.html]
+- Install Apache Maven 3+ [http://maven.apache.org]
+- Install JBoss Fuse  6.1.x [https://www.jboss.org/products/fuse.html]
 
 Build & Run
 ==============================
@@ -66,7 +51,7 @@ JBossFuse:karaf@root>  log:display
 
    or from the command line
 
-<JBoss Fuse home> $ tail -f data/log/fuseesb.log
+<JBoss Fuse home> $ tail -f data/log/fuse.log
 
 6) To test the WS, use your favorite WS tool (e.g. SoapUI) against the following
    WSDL hosted by the rider-auto-ws bundle.
@@ -75,5 +60,5 @@ JBossFuse:karaf@root>  log:display
 Getting Help
 ============================
 
-If you hit any problems please let the FuseSource team know on the forums
-  http://fusesource.com/forums/forum.jspa?forumID=2
+If you hit any problems please let the Fuse team know on the forums
+  [https://community.jboss.org/en/jbossfuse]
