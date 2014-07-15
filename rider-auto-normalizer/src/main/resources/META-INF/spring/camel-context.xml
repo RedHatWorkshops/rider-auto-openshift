@@ -33,14 +33,6 @@
 					<to uri="activemq:orders" />
 				</when>
 			</choice>
-			<onException>
-				<exception>java.lang.Exception</exception>
-				<handled>
-					<constant>true</constant>
-				</handled>
-				<log message="Unable to parse message! Routing to invalid orders queue." />
-				<to uri="activemq:invalidOrders" />
-			</onException>
 		</route>
 	</camelContext>
 

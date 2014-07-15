@@ -14,20 +14,20 @@
   </bean>
 
   <cxf:cxfEndpoint id="orderEndpoint"
-                   address="http://localhost:8182/cxf/order"
+                   address="http://localhost:8183/cxf/order"
                    serviceClass="org.fusesource.camel.ws.OrderEndpoint"/>
   
-  <camelContext id="rider-auto-ws" trace="true" xmlns="http://camel.apache.org/schema/spring">
-    <route id="ws-to-jms">
-      <from uri="cxf:bean:orderEndpoint" />  
-      <setBody>
-        <simple>${in.body[0]}</simple>
-      </setBody>   
-      <inOnly uri="activemq:incomingOrders" />
-      <transform>
-        <constant>OK</constant>
-      </transform>
+  <camelContext trace="true" id="rider-auto-ws" xmlns="http://camel.apache.org/schema/spring">
+    <route customId="true" id="ws-to-jms">
+        <from uri="cxf:bean:orderEndpoint"/>
+        <setBody>
+            <simple>${in.body[0]}</simple>
+        </setBody>
+        <inOnly uri="activemq:incomingOrders"/>
+        <transform>
+            <constant>OK</constant>
+        </transform>
     </route>
-  </camelContext>
+</camelContext>
 
 </beans>
