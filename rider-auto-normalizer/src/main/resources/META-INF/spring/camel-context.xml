@@ -11,29 +11,30 @@
     <property name="password" value="admin"/>
   </bean>
 
-	<camelContext trace="true" id="rider-auto-normalizer"
-		xmlns="http://camel.apache.org/schema/spring">
-
-		<route customId="true" id="normalize-message-data">
-			<from uri="activemq:incomingOrders" />
-			<choice>
-				<when>
-					<simple>${header.CamelFileName} regex '^.*xml$'</simple>
-					<unmarshal>
-						<jaxb contextPath="org.fusesource.camel.model" />
-					</unmarshal>
-					<to uri="activemq:orders" />
-				</when>
-				<when>
-					<simple>${header.CamelFileName} regex '^.*(csv|csl)$'</simple>
-					<unmarshal>
-						<bindy type="Csv" packages="org.fusesource.camel.model" />
-					</unmarshal>
-					<convertBodyTo type="org.fusesource.camel.model.Order" />
-					<to uri="activemq:orders" />
-				</when>
-			</choice>
-		</route>
-	</camelContext>
+  <camelContext trace="true" id="rider-auto-normalizer" xmlns="http://camel.apache.org/schema/spring">
+    <route customId="true" id="normalize-message-data">
+      <from uri="activemq:incomingOrders"/>
+      <choice>
+        <when>
+          <simple>${header.CamelFileName} regex '^.*xml$'</simple>
+          <unmarshal>
+            <jaxb contextPath="org.fusesource.camel.model"/>
+          </unmarshal>
+          <to uri="activemq:orders"/>
+        </when>
+        <when>
+          <simple>${header.CamelFileName} regex '^.*(csv|csl)$'</simple>
+          <unmarshal>
+            <bindy type="Csv" packages="org.fusesource.camel.model"/>
+          </unmarshal>
+          <convertBodyTo type="org.fusesource.camel.model.Order"/>
+          <to uri="activemq:orders"/>
+        </when>
+        <otherwise>
+          <to uri="activemq:orders"/>
+        </otherwise>
+      </choice>
+    </route>
+  </camelContext>
 
 </beans>
