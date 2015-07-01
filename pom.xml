@@ -31,10 +31,10 @@
 	</modules>
 
 	<properties>
-		<activemq-version>5.9.0.redhat-610379</activemq-version>
-		<camel-version>2.12.0.redhat-610379</camel-version>
-		<cxf-version>2.7.0.redhat-610379</cxf-version>
-		<fabric.version>1.0.0.redhat-379</fabric.version>
+		<activemq-version>5.11.0.redhat-620133</activemq-version>
+		<camel-version>2.15.1.redhat-620133</camel-version>
+		<cxf-version>3.0.4.redhat-620133</cxf-version>
+		<fabric.version>1.2.0.redhat-133</fabric.version>
 		<slf4j-api-version>1.6.6</slf4j-api-version>
 	</properties>
 
@@ -159,8 +159,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.2</version>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin>
 				<plugin>
