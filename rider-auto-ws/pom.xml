@@ -46,6 +46,24 @@
       <artifactId>camel-cxf</artifactId>
       <scope>runtime</scope>
     </dependency>
+    
+    <dependency>
+    	<groupId>org.apache.camel</groupId>
+    	<artifactId>camel-core</artifactId>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-beans</artifactId>
+    	<version>3.0.7.RELEASE</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-test</artifactId>
+    	<version>3.0.7.RELEASE</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
@@ -94,6 +112,7 @@
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
+      <version>5.8.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
