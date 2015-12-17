@@ -1,5 +1,5 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:camel="http://camel.apache.org/schema/spring" 
+       xmlns:camel="http://camel.apache.org/schema/spring"
        xmlns:cxf="http://camel.apache.org/schema/cxf"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,13 +16,16 @@
   <cxf:cxfEndpoint id="orderEndpoint"
                    address="http://localhost:8183/cxf/order"
                    serviceClass="org.fusesource.camel.ws.OrderEndpoint"/>
-  
+
   <camelContext trace="true" id="rider-auto-ws" xmlns="http://camel.apache.org/schema/spring">
     <route customId="true" id="ws-to-jms">
         <from uri="cxf:bean:orderEndpoint"/>
         <setBody>
             <simple>${in.body[0]}</simple>
         </setBody>
+        <marshal>
+          <jaxb contextPath="org.fusesource.camel.model"/>
+        </marshal>
         <inOnly uri="activemq:incomingOrders"/>
         <transform>
             <constant>OK</constant>

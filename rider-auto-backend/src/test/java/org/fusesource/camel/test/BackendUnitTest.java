@@ -18,19 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(CamelSpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:/META-INF/spring/camel-context.xml", 
+@ContextConfiguration({"classpath:/META-INF/spring/camel-context.xml",
                        "classpath:/META-INF/spring/test-camel-context.xml"})
 public class BackendUnitTest {
 
   @Autowired
   private CamelContext camelCtx;
-  
+
   @Produce(uri = "activemq:orders")
   private ProducerTemplate amqPT;
-  
+
   @EndpointInject(uri = "mock:bean:backendImpl")
   private MockEndpoint mockBackendEP;
-  
+
   @Before
   public void adviceRoutes() throws Exception {
     ((ModelCamelContext) camelCtx).getRouteDefinition("rider-auto-backend-route").adviceWith((ModelCamelContext) camelCtx, new AdviceWithRouteBuilder() {
@@ -41,14 +41,12 @@ public class BackendUnitTest {
       }
     });
   }
-  
+
   @Test
   public void testRiderAutoBackendRoute() throws Exception {
-    
+
     String id = UUID.randomUUID().toString();
-    Order body = new Order();
-    body.setName("foo");
-    body.setAmount(5);
+    String body = "<order><name>foo</name><amount>5</amount></order>";
     amqPT.sendBodyAndHeader(body, "JMSCorrelationID", id);
     mockBackendEP.expectedMessageCount(1);
     mockBackendEP.expectedHeaderReceived("JMSCorrelationID", id);

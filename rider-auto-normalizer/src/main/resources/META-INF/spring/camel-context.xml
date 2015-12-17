@@ -1,5 +1,5 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:camel="http://camel.apache.org/schema/spring" 
+       xmlns:camel="http://camel.apache.org/schema/spring"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
@@ -20,6 +20,9 @@
           <unmarshal>
             <jaxb contextPath="org.fusesource.camel.model"/>
           </unmarshal>
+          <marshal>
+            <jaxb contextPath="org.fusesource.camel.model"/>
+          </marshal>
           <to uri="activemq:orders"/>
         </when>
         <when>
@@ -28,9 +31,18 @@
             <bindy type="Csv" packages="org.fusesource.camel.model"/>
           </unmarshal>
           <convertBodyTo type="org.fusesource.camel.model.Order"/>
+          <marshal>
+            <jaxb contextPath="org.fusesource.camel.model"/>
+          </marshal>
           <to uri="activemq:orders"/>
         </when>
         <otherwise>
+          <unmarshal>
+            <jaxb contextPath="org.fusesource.camel.model"/>
+          </unmarshal>
+          <marshal>
+            <jaxb contextPath="org.fusesource.camel.model"/>
+          </marshal>
           <to uri="activemq:orders"/>
         </otherwise>
       </choice>

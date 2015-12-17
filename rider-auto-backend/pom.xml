@@ -22,13 +22,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.fusesource.examples</groupId>
     <artifactId>rider-auto-osgi</artifactId>
     <version>4.0-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>rider-auto-backend</artifactId>
   <packaging>bundle</packaging>
 
@@ -39,27 +39,34 @@
     <dependency>
       <groupId>org.fusesource.examples</groupId>
       <artifactId>rider-auto-common</artifactId>
-    </dependency> 
-    
+    </dependency>
+
     <!-- Spring container support -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
       <scope>runtime</scope>
-    </dependency>  
+    </dependency>
 
-    <!-- ActiveMQ connectivity for Camel -->            
+    <!-- Add support for JAXB marshaling -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jaxb</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- ActiveMQ connectivity for Camel -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-camel</artifactId>
       <scope>runtime</scope>
     </dependency>
-        
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -87,14 +94,14 @@
     </dependency>
   </dependencies>
 
-  <build>    
-    <plugins>      
+  <build>
+    <plugins>
       <!-- generate OSGi bundle -->
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
-      </plugin>      
+      </plugin>
      </plugins>
   </build>
 
