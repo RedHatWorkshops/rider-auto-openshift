@@ -36,6 +36,58 @@
   <url>http://fusesource.com</url>
 
   <dependencies>
+    <!-- Karaf microcontainer dependencies -->
+    <dependency>
+      <!-- scope is compile so all features (there is only one) are installed into startup.properties,
+and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
+      <type>kar</type>
+      <!-- no need to download kar dependencies -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>standard</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>enterprise</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.karaf</groupId>
+      <artifactId>apache-camel</artifactId>
+      <version>${camel-version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-karaf</artifactId>
+      <version>${activemq-version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>spring</artifactId>
+      <version>${spring.features.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+
     <dependency>
       <groupId>org.fusesource.examples</groupId>
       <artifactId>rider-auto-common</artifactId>
@@ -65,6 +117,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -102,7 +155,165 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
+      <!-- camel plugin-->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+      </plugin>
+      <!-- allows the route to be ran via 'mvn exec:java' -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <configuration>
+          <mainClass>org.apache.camel.spring.Main</mainClass>
+        </configuration>
+      </plugin>
      </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>fabric8</id>
+      <properties>
+        <fabric8.service.name>${project.artifactId}</fabric8.service.name>
+        <fabric8.service.headless>true</fabric8.service.headless>
+
+        <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
+        <fabric8.metrics.port>9779</fabric8.metrics.port>
+        <!-- End Prometheus metrics stuff -->
+
+        <fabric8.label.component>${project.artifactId}</fabric8.label.component>
+        <fabric8.label.container>java</fabric8.label.container>
+        <fabric8.label.group>rider-auto</fabric8.label.group>
+        <fabric8.iconRef>camel</fabric8.iconRef>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-maven-plugin</artifactId>
+            <version>${fabric8.version}</version>
+            <executions>
+              <execution>
+                <id>json</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>json</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>attach</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>attach</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.image}</name>
+                  <build>
+                    <from>${docker.from}</from>
+                    <assembly>
+                      <basedir>/deployments</basedir>
+                      <descriptorRef>hawt-app</descriptorRef>
+                    </assembly>
+                    <env>
+                      <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
+                      <JAVA_MAIN_CLASS>org.apache.camel.spring.Main</JAVA_MAIN_CLASS>
+                    </env>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>karaf-distro</id>
+      <properties>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.karaf.tooling</groupId>
+            <artifactId>karaf-maven-plugin</artifactId>
+            <version>${karaf.plugin.version}</version>
+            <extensions>true</extensions>
+            <executions>
+              <execution>
+                <id>karaf-assembly</id>
+                <goals>
+                  <goal>assembly</goal>
+                </goals>
+                <phase>install</phase>
+              </execution>
+              <execution>
+                <id>karaf-archive</id>
+                <goals>
+                  <goal>archive</goal>
+                </goals>
+                <phase>install</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <karafVersion>v24</karafVersion>
+              <javase>1.8</javase>
+              <useReferenceUrls>true</useReferenceUrls>
+              <!-- do not include build output directory -->
+              <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+              <!-- no startupFeatures -->
+              <startupFeatures>
+                <feature>karaf-framework</feature>
+                <feature>shell</feature>
+                <feature>jaas</feature>
+                <feature>spring</feature>
+                <feature>activemq-client</feature>
+                <feature>activemq-camel</feature>
+                <feature>camel-spring</feature>
+                <feature>camel-bindy</feature>
+              </startupFeatures>
+              <startupBundles>
+                <!--  this needs to be here for spring-dm to resolve properly!!-->
+                <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
+                <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+              </startupBundles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>hawtapp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>hawt-app-maven-plugin</artifactId>
+            <version>${fabric8.version}</version>
+            <executions>
+              <execution>
+                <id>hawt-app</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <configuration>
+                  <javaMainClass>org.apache.camel.spring.Main</javaMainClass>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

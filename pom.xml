@@ -31,123 +31,42 @@
 	</modules>
 
 	<properties>
-		<activemq-version>5.11.0.redhat-621084</activemq-version>
+		<fabric8.version>2.2.0.redhat-079</fabric8.version>
+		<fuse.version>6.2.1.redhat-084</fuse.version>
 		<camel-version>2.15.1.redhat-621084</camel-version>
-		<cxf-version>3.0.4.redhat-621084</cxf-version>
-		<fabric.version>1.2.0.redhat-621084</fabric.version>
-		<slf4j-api-version>1.7.13</slf4j-api-version>
-		<junit-version>4.11</junit-version>
+		<activemq-version>5.11.0.redhat-621084</activemq-version>
+
+		<!-- Common docker maven plugin configs -->
+		<fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+		<docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+		<docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
+		<docker.from>jboss-fuse-6/fis-java-openshift:1.0</docker.from>
+		<docker.port.container.jolokia>8778</docker.port.container.jolokia>
+		<karaf.version>2.4.0.redhat-621084</karaf.version>
+		<karaf.plugin.version>4.0.2.redhat-621079</karaf.plugin.version>
+		<spring.features.version>3.0.4</spring.features.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Core Camel support -->
 			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-core</artifactId>
-				<version>${camel-version}</version>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-project-bom-with-platform-deps</artifactId>
+				<version>${fabric8.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-
-			<!-- Spring container support -->
 			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-spring</artifactId>
-				<version>${camel-version}</version>
+				<groupId>org.jboss.fuse.bom</groupId>
+				<artifactId>jboss-fuse-parent</artifactId>
+				<version>${fuse.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-
-			<!-- ActiveMQ connectivity for Camel -->
-			<dependency>
-				<groupId>org.apache.activemq</groupId>
-				<artifactId>activemq-camel</artifactId>
-				<version>${activemq-version}</version>
-			</dependency>
-
-			<!-- Add support for JAXB marshaling -->
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-jaxb</artifactId>
-				<version>${camel-version}</version>
-			</dependency>
-
-			<!-- Add support for CSV marshaling -->
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-bindy</artifactId>
-				<version>${camel-version}</version>
-			</dependency>
-
 			<dependency>
 				<groupId>org.fusesource.examples</groupId>
 				<artifactId>rider-auto-common</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-
-			<!-- Add support for CXF -->
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-cxf</artifactId>
-				<version>${camel-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-transports-http-jetty</artifactId>
-				<version>${cxf-version}</version>
-			</dependency>
-
-
-			<dependency>
-				<groupId>org.apache.camel.karaf</groupId>
-				<artifactId>apache-camel</artifactId>
-				<version>${camel-version}</version>
-				<classifier>features</classifier>
-				<type>xml</type>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.activemq</groupId>
-				<artifactId>activemq-karaf</artifactId>
-				<version>${activemq-version}</version>
-				<classifier>features</classifier>
-				<type>xml</type>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j-api-version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>${slf4j-api-version}</version>
-			</dependency>
-
-			<!-- Test dependencies -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-test</artifactId>
-				<version>${camel-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-test-spring</artifactId>
-				<version>${camel-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j-api-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.activemq</groupId>
-				<artifactId>activemq-broker</artifactId>
-				<version>${activemq-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
