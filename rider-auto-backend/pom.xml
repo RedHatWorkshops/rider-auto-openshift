@@ -211,35 +211,13 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <configuration>
-              <images>
-                <image>
-                  <name>${docker.image}</name>
-                  <build>
-                    <from>${docker.from}</from>
-                    <assembly>
-                      <basedir>/deployments</basedir>
-                      <descriptorRef>hawt-app</descriptorRef>
-                    </assembly>
-                    <env>
-                      <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
-                      <JAVA_MAIN_CLASS>org.apache.camel.spring.Main</JAVA_MAIN_CLASS>
-                    </env>
-                  </build>
-                </image>
-              </images>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>
     <profile>
       <id>karaf-distro</id>
       <properties>
+        <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0</docker.from>
       </properties>
       <build>
         <plugins>
@@ -288,6 +266,39 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
               </startupBundles>
             </configuration>
           </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.image}</name>
+                  <build>
+                    <from>${docker.from}</from>
+                    <assembly>
+                      <basedir>/deployments</basedir>
+                      <user>jboss:jboss:jboss</user>
+                      <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                              xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                        <id>${project.artifactId}</id>
+                        <files>
+                          <!-- copy karaf archive -->
+                          <file>
+                            <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
+                            <outputDirectory>/</outputDirectory>
+                          </file>
+                        </files>
+                      </inline>
+                    </assembly>
+                    <cmd>
+                      <shell>/deployments/deploy-and-run.sh</shell>
+                    </cmd>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -310,6 +321,29 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.image}</name>
+                  <build>
+                    <from>${docker.from}</from>
+                    <assembly>
+                      <basedir>/deployments</basedir>
+                      <descriptorRef>hawt-app</descriptorRef>
+                    </assembly>
+                    <env>
+                      <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
+                      <JAVA_MAIN_CLASS>org.apache.camel.spring.Main</JAVA_MAIN_CLASS>
+                    </env>
+                  </build>
+                </image>
+              </images>
+            </configuration>
           </plugin>
         </plugins>
       </build>
