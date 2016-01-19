@@ -100,6 +100,12 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-camel</artifactId>
     </dependency>
+
+    <!--  Use this to modify the kubernetes.json -->
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-generator</artifactId>
+    </dependency>
     
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -175,6 +181,9 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
         <fabric8.metrics.port>9779</fabric8.metrics.port>
         <!-- End Prometheus metrics stuff -->
+
+        <fabric8.generateJson>true</fabric8.generateJson>
+
 
         <fabric8.label.component>${project.artifactId}</fabric8.label.component>
         <fabric8.label.container>java</fabric8.label.container>
