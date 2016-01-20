@@ -30,26 +30,6 @@ import java.util.HashMap;
 @KubernetesModelProcessor
 public class RiderAutoJsonModelProcessor {
 
-    // comment this out for now; we'll include the PV in a different manifest since
-    // this is not something typically installed as part of the application and is done
-    // an adminsitrator
-/*    public void withPersistentVolume(TemplateBuilder builder) {
-        builder.addNewPersistentVolumeObject()
-                .withNewMetadata()
-                    .withName("auto-rider-pv")
-                    .addToLabels("provider", "fabric8")
-                    .addToLabels("project", "rider-auto-file")
-                    .addToLabels("component", "rider-auto-file")
-                    .addToLabels("group", "rider-auto")
-                .endMetadata()
-                .withNewSpec()
-                    .addToCapacity("storage", new Quantity("100Ki"))
-                    .addToAccessModes("ReadWriteOnce")
-                    .withHostPath(new HostPathVolumeSource("/home/vagrant/camel"))
-                .endSpec()
-                .endPersistentVolumeObject()
-                .build();
-    }*/
 
     public void withPersistentVolumeClaim(TemplateBuilder builder){
         builder.addNewPersistentVolumeClaimObject()

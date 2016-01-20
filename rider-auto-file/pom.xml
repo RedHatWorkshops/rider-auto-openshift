@@ -281,7 +281,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
                     <from>${docker.from}</from>
                     <assembly>
                       <basedir>/deployments</basedir>
-                      <user>jboss:jboss:jboss</user>
+                      <user>root:root:root</user>
                       <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
                               xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                         <id>${project.artifactId}</id>
@@ -337,6 +337,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
                     <from>${docker.from}</from>
                     <assembly>
                       <basedir>/deployments</basedir>
+                      <user>root:root:root</user>
                       <descriptorRef>hawt-app</descriptorRef>
                     </assembly>
                     <env>

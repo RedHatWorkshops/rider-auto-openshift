@@ -1,9 +1,14 @@
-Useful example for using Jboss Fuse 6.x
+Fuse integration Services on OpenShift
 =======================================
 
 The Camel routes used in this example are explained by the following diagram:
 
 ![EIP Diagram](https://raw.github.com/FuseByExample/rider-auto-osgi/master/doc/EIP_Routes_Diagram.png)
+
+With the recently released functionality in Fuse integration services on OpenShift we're able to run our integration
+services in a microservice style architecture in docker containers. We've been architecting services for Fuse
+like this for a long time, but now we can take advantage of the automation, process isolation, and packaging benefits
+of Docker which is crucial for a microservices style deployment.
 
 
 Setup
@@ -12,8 +17,11 @@ Setup
 - Install JBoss Developer Studio 8.1.0 [https://www.jboss.org/products/devstudio.html]
 - Install Apache Maven 3.2.x [http://maven.apache.org]
 - Install JBoss Fuse  6.2.1 [https://www.jboss.org/products/fuse.html]
+- Install the Red Hat [CDK Beta](https://www.redhat.com/en/about/blog/introducing-red-hat-container-development-kit-2-beta) or have access to an OpenShift installation
+- (Optional, but recommended) Install the [native docker](https://docs.docker.com/engine/installation/binaries/#get-the-docker-binary) _client_ libs for your operating system
+- (Optional, but recommended) Install the [native openshift](https://github.com/openshift/origin/releases) _client_ libs for your operating system
 
-Build & Run
+Java Build & Run
 ==============================
 
 1) Build this project so bundles are deployed into your local maven repo
