@@ -30,29 +30,34 @@ import java.util.HashMap;
 @KubernetesModelProcessor
 public class RiderAutoJsonModelProcessor {
 
-    public void withPersistentVolume(TemplateBuilder builder) {
+    // comment this out for now; we'll include the PV in a different manifest since
+    // this is not something typically installed as part of the application and is done
+    // an adminsitrator
+/*    public void withPersistentVolume(TemplateBuilder builder) {
         builder.addNewPersistentVolumeObject()
                 .withNewMetadata()
                     .withName("auto-rider-pv")
                     .addToLabels("provider", "fabric8")
                     .addToLabels("project", "rider-auto-file")
+                    .addToLabels("component", "rider-auto-file")
                     .addToLabels("group", "rider-auto")
                 .endMetadata()
                 .withNewSpec()
-                    .addToCapacity("storage", new Quantity("10MB"))
+                    .addToCapacity("storage", new Quantity("100Ki"))
                     .addToAccessModes("ReadWriteOnce")
                     .withHostPath(new HostPathVolumeSource("/home/vagrant/camel"))
                 .endSpec()
                 .endPersistentVolumeObject()
                 .build();
-    }
+    }*/
 
     public void withPersistentVolumeClaim(TemplateBuilder builder){
         builder.addNewPersistentVolumeClaimObject()
                 .withNewMetadata()
-                    .withName("rider-auto-file")
+                    .withName("rider-auto-file-pvc")
                     .addToLabels("provider", "fabric8")
                     .addToLabels("project", "rider-auto-file")
+                    .addToLabels("component", "rider-auto-file")
                     .addToLabels("group", "rider-auto")
                 .endMetadata()
                 .withNewSpec()
@@ -65,16 +70,31 @@ public class RiderAutoJsonModelProcessor {
     private ResourceRequirements getResourceRequirement() {
         ResourceRequirements rc = new ResourceRequirements();
 
-        Quantity claimSize = new Quantity("10MB");
+        Quantity claimSize = new Quantity("100Ki");
         HashMap<String, Quantity> requests = new HashMap<>();
         requests.put("storage", claimSize);
         rc.setRequests(requests);
         return rc;
     }
 
+    public void withPodTemplate(PodTemplateSpecBuilder builder) {
+        builder.withSpec(builder.getSpec()).editSpec()
+                .addNewVolume()
+                    .withName("rider-auto-file-volume")
+                    .withPersistentVolumeClaim(getPersistentVolumeClaimSource())
+                .endVolume()
+                .endSpec().build();
+    }
+
+    private PersistentVolumeClaimVolumeSource getPersistentVolumeClaimSource() {
+        PersistentVolumeClaimVolumeSource rc = new PersistentVolumeClaimVolumeSource("rider-auto-file-pvc", false);
+        return rc;
+    }
+
     @Named("rider-auto-file")
     public void withVolumeMounts(ContainerBuilder builder) {
-        builder.withVolumeMounts(new VolumeMount("/deployment/target", "camel-file-mount", true)).build();
+        builder.withVolumeMounts(new VolumeMount("/deployments/target/placeorder", "rider-auto-file-volume", false))
+                .build();
     }
 
 }

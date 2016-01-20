@@ -184,6 +184,8 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
 
         <fabric8.generateJson>true</fabric8.generateJson>
 
+        <!-- don't need openshift routes for this file services, will use volumes-->
+        <fabric8.apply.createRoutes>false</fabric8.apply.createRoutes>
 
         <fabric8.label.component>${project.artifactId}</fabric8.label.component>
         <fabric8.label.container>java</fabric8.label.container>
