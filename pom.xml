@@ -16,7 +16,7 @@
 
 	<groupId>org.fusesource.examples</groupId>
 	<artifactId>rider-auto-osgi</artifactId>
-	<version>4.0</version>
+	<version>5.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rider Auto OSGi Example</name>
