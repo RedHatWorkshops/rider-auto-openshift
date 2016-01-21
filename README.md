@@ -1,24 +1,17 @@
-NOTE: If you need the example from the "Getting Started with Apache Servicemix" 
-webinar, please use the code from the rider-auto-osgi-smx-4.4.1-fuse-00-08 tag instead.
-
-
-
-Example from "Getting Started with Apache Servicemix" webinar
-========================================================
+Useful example for using Jboss Fuse 6.x
+=======================================
 
 The Camel routes used in this example are explained by the following diagram:
 
 ![EIP Diagram](https://raw.github.com/FuseByExample/rider-auto-osgi/master/doc/EIP_Routes_Diagram.png)
 
-To run this example project build the project and deploy to ServiceMix  
-according to the steps below. 
 
 Setup
 ==============================
 
 - Install JBoss Developer Studio 8.1.0 [https://www.jboss.org/products/devstudio.html]
-- Install Apache Maven 3+ [http://maven.apache.org]
-- Install JBoss Fuse  6.2.x [https://www.jboss.org/products/fuse.html]
+- Install Apache Maven 3.2.x [http://maven.apache.org]
+- Install JBoss Fuse  6.2.1 [https://www.jboss.org/products/fuse.html]
 
 Build & Run
 ==============================
