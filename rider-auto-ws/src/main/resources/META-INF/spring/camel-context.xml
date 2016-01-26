@@ -7,10 +7,10 @@
                            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
   <!-- Set username and password to values you set in etc/user.properties -->
-  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent" >
-    <property name="brokerURL" value="tcp://localhost:61616"/>
+  <bean id="activemq" class="io.fabric8.mq.camel.AMQComponent" >
     <property name="userName" value="admin"/>
     <property name="password" value="admin"/>
+    <property name="serviceName" value="broker"/>
   </bean>
 
   <cxf:cxfEndpoint id="orderEndpoint"

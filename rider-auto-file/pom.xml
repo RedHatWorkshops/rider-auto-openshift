@@ -101,12 +101,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <artifactId>activemq-camel</artifactId>
     </dependency>
 
-    <!--  Use this to modify the kubernetes.json -->
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-generator</artifactId>
-    </dependency>
-    
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -192,6 +187,17 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.label.group>rider-auto</fabric8.label.group>
         <fabric8.iconRef>camel</fabric8.iconRef>
       </properties>
+      <dependencies>
+        <!--  Use this to modify the kubernetes.json -->
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-generator</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.fabric8.mq</groupId>
+          <artifactId>camel-amq</artifactId>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
