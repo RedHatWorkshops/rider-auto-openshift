@@ -315,6 +315,8 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
               <startupBundles>
                 <!--  this needs to be here for spring-dm to resolve properly!!-->
                 <bundle>mvn:org.apache.karaf.bundle/org.apache.karaf.bundle.core/3.0.4</bundle>
+                <bundle>mvn:io.fabric8.mq/mq-client/2.2.0.redhat-079</bundle>
+                <bundle>mvn:io.fabric8/fabric8-utils/2.2.0.redhat-079</bundle>
                 <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
               </startupBundles>
             </configuration>
