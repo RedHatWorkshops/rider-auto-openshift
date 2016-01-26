@@ -169,6 +169,9 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
   <profiles>
     <profile>
       <id>fabric8</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <fabric8.service.name>${project.artifactId}</fabric8.service.name>
         <fabric8.service.headless>true</fabric8.service.headless>

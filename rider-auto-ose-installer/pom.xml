@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>rider-auto-osgi</artifactId>
+    <groupId>org.fusesource.examples</groupId>
+    <version>5.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>rider-auto-ose-installer</artifactId>
+  <name>Rider Auto OSGi Example :: OpenShift Installer</name>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rider-auto-ws</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rider-auto-file</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rider-auto-backend</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rider-auto-normalizer</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>fabric8</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <fabric8.combineDependencies>true</fabric8.combineDependencies>
+        <fabric8.generateJson>false</fabric8.generateJson>
+        <fabric8.failOnMissingJsonFiles>false</fabric8.failOnMissingJsonFiles>
+        <fabric8.recreate>true</fabric8.recreate>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-maven-plugin</artifactId>
+            <version>${fabric8.version}</version>
+            <executions>
+              <execution>
+                <id>json</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>json</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>attach</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>attach</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

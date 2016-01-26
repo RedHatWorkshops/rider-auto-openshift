@@ -28,6 +28,7 @@
 		<module>rider-auto-ws</module>
 		<module>rider-auto-normalizer</module>
 		<module>rider-auto-backend</module>
+		<module>rider-auto-ose-installer</module>
 	</modules>
 
 	<properties>
