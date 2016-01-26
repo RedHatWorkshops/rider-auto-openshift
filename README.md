@@ -68,6 +68,26 @@ This project ends up building a few important things:
 * kubernetes.json files for each module, found in `target/classes/kubernetes.json` of each sub-module
 * a single, comprehensive kubernetes.json that has all of the submodule descriptor files to install all in one found in `rider-auto-ose-installer/target/classes/kubernetes.json`
 
+## Deploy A-MQ
+This example uses JBoss A-MQ, so we need to have that running in the same project/namespace as the rider-auto apps (including this module).
+To deploy AMQ, follow the [instructions from the xPaaS AMQ documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html). On the CDK, you can do this:
+
+### Create a template for JBoss A-MQ
+
+> oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/master/roles/openshift_examples/files/examples/v1.1/xpaas-templates/amq62-basic.json
+> oc process amq62-basic -v APPLICATION_NAME=broker -v MQ_USERNAME=admin -v MQ_PASSWORD=admin 
+  
+Or you can use the template i've included in the root of this project:
+
+> oc create -f amq.json
+
+```
+service "broker-amq-tcp" created
+deploymentconfig "broker-amq" created
+```      
+Note that the user name and password need to be `admin/admin` as that's what the rider-auto-osgi project expects.
+  
+
 
 ### To build and install, please have a look at the docs for each module, or the all-in-one installer
 

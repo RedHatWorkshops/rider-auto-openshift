@@ -432,5 +432,24 @@ This command assumes everything is running locally (like on the CDK). Otherwise,
   the `fabric8:apply` command to deploy the app. 
   
 
+## Deploy A-MQ
+This example uses JBoss A-MQ, so we need to have that running in the same project/namespace as the rider-auto apps (including this module).
+To deploy AMQ, follow the [instructions from the xPaaS AMQ documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html). On the CDK, you can do this:
+
+### Create a template for JBoss A-MQ
+
+> oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/master/roles/openshift_examples/files/examples/v1.1/xpaas-templates/amq62-basic.json
+> oc process amq62-basic -v APPLICATION_NAME=broker -v MQ_USERNAME=admin -v MQ_PASSWORD=admin 
+  
+Or you can use the template i've included in the root of this project:
+
+> oc create -f amq.json
+
+```
+service "broker-amq-tcp" created
+deploymentconfig "broker-amq" created
+```      
+Note that the user name and password need to be `admin/admin` as that's what the rider-auto-osgi project expects.
+  
   
 [camel-boot]: http://camel.apache.org/camel-boot.html
