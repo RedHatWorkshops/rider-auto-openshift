@@ -95,6 +95,11 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <scope>runtime</scope>
     </dependency>
 
+    <dependency>
+      <groupId>io.fabric8.mq</groupId>
+      <artifactId>camel-amq</artifactId>
+    </dependency>
+
     <!-- ActiveMQ connectivity for Camel -->            
     <dependency>
       <groupId>org.apache.activemq</groupId>
@@ -147,6 +152,13 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package></Export-Package>
+            <Import-Package>io.fabric8.mq.camel;version="[2.2,3)"</Import-Package>
+          </instructions>
+        </configuration>
+
       </plugin>
 
       <!-- camel plugin-->
@@ -154,6 +166,8 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-maven-plugin</artifactId>
       </plugin>
+
+
       <!-- allows the route to be ran via 'mvn exec:java' -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -196,10 +210,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
           <groupId>io.fabric8</groupId>
           <artifactId>kubernetes-generator</artifactId>
         </dependency>
-        <dependency>
-          <groupId>io.fabric8.mq</groupId>
-          <artifactId>camel-amq</artifactId>
-        </dependency>
+
 
         <!-- testing -->
         <dependency>
@@ -257,6 +268,18 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*ModelProcessor.java</exclude>
+              </excludes>
+              <testExcludes>
+                <exclude>**/*KT.java</exclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
+          <plugin>
             <groupId>org.apache.karaf.tooling</groupId>
             <artifactId>karaf-maven-plugin</artifactId>
             <version>${karaf.plugin.version}</version>
@@ -300,6 +323,10 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
                 <bundle>mvn:io.fabric8/fabric8-utils/2.2.0.redhat-079</bundle>
                 <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
               </startupBundles>
+              <blacklistPolicy>Discard</blacklistPolicy>
+              <blacklistedBundles>
+                <bundle>mvn:io.fabric8:kubernetes-generator/${fabric8.version}</bundle>
+              </blacklistedBundles>
             </configuration>
           </plugin>
           <plugin>

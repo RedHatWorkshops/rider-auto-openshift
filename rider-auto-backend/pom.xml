@@ -89,6 +89,11 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
     </dependency>
 
     <dependency>
+      <groupId>io.fabric8.mq</groupId>
+      <artifactId>camel-amq</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.fusesource.examples</groupId>
       <artifactId>rider-auto-common</artifactId>
     </dependency>
@@ -192,10 +197,7 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
         <fabric8.iconRef>camel</fabric8.iconRef>
       </properties>
       <dependencies>
-        <dependency>
-          <groupId>io.fabric8.mq</groupId>
-          <artifactId>camel-amq</artifactId>
-        </dependency>
+
 
         <!-- testing -->
         <dependency>
