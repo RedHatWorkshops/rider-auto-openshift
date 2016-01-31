@@ -372,6 +372,18 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*ModelProcessor.java</exclude>
+              </excludes>
+              <testExcludes>
+                <exclude>**/*KT.java</exclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
+          <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>hawt-app-maven-plugin</artifactId>
             <version>${fabric8.version}</version>
