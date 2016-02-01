@@ -16,7 +16,7 @@ If you'd like to skip tests:
 ## Running locally
 You should be able to run this locally using mvn, and it should work as expected. We highly recommend you test your services out locally before packaging as Docker containers:
 
-> rider-auto-ws $  mvn camel:run
+> mvn camel:run
 
 You can then test that it works by using a SOAP tool, or hitting it in a web browser:
 
@@ -77,7 +77,7 @@ You should end up with the WSDL returned:
     
 You may also want to try the same thing using `mvn exec:java`
 
-> rider-auto-ws $  mvn exec:java
+>  mvn exec:java
 
 This will run the app's main file (from [camel-boot](camel-boot)) using the classpath from maven.
 
@@ -223,7 +223,7 @@ Can run `./bin/karaf` to boot up the karaf distro.
 
 ### Building the karaf-based service as a docker container
 
-> $ mvn clean install -Pfabric8 -Phawtapp docker:build
+> $ mvn clean install -Pfabric8 -Pkaraf-distro docker:build
   
 (Skip tests can be done with adding `-Dtest=false -DfailIfNoTests=false`)
   
