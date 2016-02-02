@@ -68,6 +68,14 @@ This project ends up building a few important things:
 * kubernetes.json files for each module, found in `target/classes/kubernetes.json` of each sub-module
 * a single, comprehensive kubernetes.json that has all of the submodule descriptor files to install all in one found in `rider-auto-ose-installer/target/classes/kubernetes.json`
 
+### To build and install the Docker microservices, please have a look at the docs for each module, or the all-in-one installer
+
+* All-in-one: [rider-auto-ose-installer](rider-auto-ose-installer/README.md)
+* [rider-auto-ws](rider-auto-ws/README.md)
+* [rider-auto-file](rider-auto-file/README.md)
+* [rider-auto-backend](rider-auto-backend/README.md)
+* [rider-auto-normalizer](rider-auto-normalizer/README.md)
+
 ## Deploy A-MQ
 This example uses JBoss A-MQ, so we need to have that running in the same project/namespace as the rider-auto apps (including this module).
 To deploy AMQ, follow the [instructions from the xPaaS AMQ documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html). On the CDK, you can do this:
@@ -86,16 +94,8 @@ service "broker-amq-tcp" created
 deploymentconfig "broker-amq" created
 ```      
 Note that the user name and password need to be `admin/admin` as that's what the rider-auto-osgi project expects.
-  
 
 
-### To build and install, please have a look at the docs for each module, or the all-in-one installer
-
-* All-in-one: [rider-auto-ose-installer](rider-auto-ose-installer/README.md)
-* [rider-auto-ws](rider-auto-ws/README.md)
-* [rider-auto-file](rider-auto-file/README.md)
-* [rider-auto-backend](rider-auto-backend/README.md)
-* [rider-auto-normalizer](rider-auto-normalizer/README.md)
 
 ### Install on a local JBoss Fuse 6.2.1 
 
@@ -104,7 +104,7 @@ Note that the user name and password need to be `admin/admin` as that's what the
 1) Add this projects features.xml config to Fuse from the Console
    (makes it easier to install bundles with all required dependencies)
 
-> JBossFuse:karaf@root>  features:addUrl mvn:org.fusesource.examples/rider-auto-common/4.0-SNAPSHOT/xml/features
+> JBossFuse:karaf@root>  features:addUrl mvn:org.fusesource.examples/rider-auto-common/5.0-SNAPSHOT/xml/features
 
 2) Install the project.
 

@@ -15,7 +15,7 @@
                     "template": "amq62-basic",
                     "xpaas": "1.2.0"
                 },
-                "name": "broker-amq-tcp"
+                "name": "broker"
             },
             "spec": {
                 "ports": [
