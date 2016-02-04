@@ -184,6 +184,9 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
   <profiles>
     <profile>
       <id>kube-generate</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <dependencies>
         <!--  Use this to modify the kubernetes.json -->
         <dependency>
