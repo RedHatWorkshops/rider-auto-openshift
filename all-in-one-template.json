@@ -1,0 +1,442 @@
+{
+  "apiVersion" : "v1",
+  "kind" : "Template",
+  "labels" : { },
+  "metadata" : {
+    "annotations" : {
+      "description" : "# How to install rider-auto\n\nThe rider-auto app consists of a set of microservices all packaged as Docker containers.\n\n\n## Create new OpenShift project\nFor this demo, we'll want to create a new OpenShift project and install all of the rider-auto microservices there.\n\n> oc new-project rider-auto\n\n## Install Persistent Volume\n\nThe rider-auto-file module will poll for new orders to start processing and it listens to a directory on a file system. In this example, we'll use Kubernetes [Persistent Volumes](http://kubernetes.io/v1.1/docs/user-guide/persistent-volumes.html) and map the location that Camel polls to a HostPath Persistent Volume which we can use to test out that everything works. For example, this is the yaml for the PV:\n \n```\nkind: PersistentVolume\napiVersion: v1\nmetadata:\n  name: rider-auto-file-pv\n  labels:\n    type: local\nspec:\n  capacity:\n    storage: 100Ki\n  accessModes:\n    - ReadWriteOnce\n  persistentVolumeReclaimPolicy: Recycle\n  hostPath:\n    path: \"/opt/camel\"\n```\n\n\nThis means that the path on disk \"/opt/camel\" will be the location that we can send files to and have the rider-auto-file pod pick it up and process it.\n\nTo install this HostPath PV, you'll need to be an admin user on the \"rider-auto\" project and try the following:\n\n\n> oc create -f rider-auto-file/src/main/fabric8/vagrant-pv.yaml\n\nAfter doing this, you should double check that it was created properly:\n\n> oc get pv\n\n```\n[root@localhost ~]# oc get pv\nNAME                 LABELS       CAPACITY   ACCESSMODES   STATUS      CLAIM     REASON    AGE\nrider-auto-file-pv   type=local   100Ki      RWO           Available                       4m\n```\n\n## Install AMQ\n\nThe microservices in this project communicate over JMS and use JBoss AMQ. To do this, we should boot up a broker in the `rider-auto` project. In the root of the project, we have a curated `amq.json` file that contains the broker.\n\n> oc create amq.json\n\n## Builder Docker containers\n\nTo run these microservices on openshift, you should build the docker images for each module. See the docs for each module for how to do that.\n\n## Install microservices\n\nFrom the root directory of `rider-auto-ose-installer` project, run:\n\n> mvn clean install fabric8:json fabric8:apply\n\n",
+      "fabric8.rider-auto-backend/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg",
+      "fabric8.rider-auto-file/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg",
+      "fabric8.rider-auto-normalizer/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg",
+      "fabric8.rider-auto-ws/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg"
+    },
+    "labels" : { },
+    "name" : "rider-auto-ose-installer"
+  },
+  "objects" : [ {
+    "apiVersion" : "v1",
+    "kind" : "Service",
+    "metadata" : {
+      "annotations" : {
+        "prometheus.io/port" : "9779",
+        "prometheus.io/scrape" : "true"
+      },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-backend",
+        "provider" : "fabric8",
+        "project" : "rider-auto-backend",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-backend"
+    },
+    "spec" : {
+      "clusterIP" : "None",
+      "deprecatedPublicIPs" : [ ],
+      "externalIPs" : [ ],
+      "ports" : [ {
+        "port" : 1
+      } ],
+      "selector" : {
+        "container" : "java",
+        "project" : "rider-auto-backend",
+        "component" : "rider-auto-backend",
+        "provider" : "fabric8",
+        "group" : "rider-auto"
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "Service",
+    "metadata" : {
+      "annotations" : {
+        "prometheus.io/port" : "9779",
+        "prometheus.io/scrape" : "true"
+      },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-file",
+        "provider" : "fabric8",
+        "project" : "rider-auto-file",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-file"
+    },
+    "spec" : {
+      "clusterIP" : "None",
+      "deprecatedPublicIPs" : [ ],
+      "externalIPs" : [ ],
+      "ports" : [ {
+        "port" : 1
+      } ],
+      "selector" : {
+        "container" : "java",
+        "project" : "rider-auto-file",
+        "component" : "rider-auto-file",
+        "provider" : "fabric8",
+        "group" : "rider-auto"
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "Service",
+    "metadata" : {
+      "annotations" : {
+        "prometheus.io/port" : "9779",
+        "prometheus.io/scrape" : "true"
+      },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-normalizer",
+        "provider" : "fabric8",
+        "project" : "rider-auto-normalizer",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-normalizer"
+    },
+    "spec" : {
+      "clusterIP" : "None",
+      "deprecatedPublicIPs" : [ ],
+      "externalIPs" : [ ],
+      "ports" : [ {
+        "port" : 1
+      } ],
+      "selector" : {
+        "container" : "java",
+        "project" : "rider-auto-normalizer",
+        "component" : "rider-auto-normalizer",
+        "provider" : "fabric8",
+        "group" : "rider-auto"
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "Service",
+    "metadata" : {
+      "annotations" : {
+        "prometheus.io/port" : "9779",
+        "prometheus.io/scrape" : "true"
+      },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-ws",
+        "provider" : "fabric8",
+        "project" : "rider-auto-ws",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-ws"
+    },
+    "spec" : {
+      "deprecatedPublicIPs" : [ ],
+      "externalIPs" : [ ],
+      "ports" : [ {
+        "port" : 80,
+        "protocol" : "TCP",
+        "targetPort" : 8183
+      } ],
+      "selector" : {
+        "container" : "java",
+        "project" : "rider-auto-ws",
+        "component" : "rider-auto-ws",
+        "provider" : "fabric8",
+        "group" : "rider-auto"
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "PersistentVolumeClaim",
+    "metadata" : {
+      "annotations" : { },
+      "labels" : {
+        "project" : "rider-auto-file",
+        "component" : "rider-auto-file",
+        "provider" : "fabric8",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-file-pvc"
+    },
+    "spec" : {
+      "accessModes" : [ "ReadWriteOnce" ],
+      "resources" : {
+        "limits" : { },
+        "requests" : {
+          "storage" : "100Ki"
+        }
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "ReplicationController",
+    "metadata" : {
+      "annotations" : { },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-backend",
+        "provider" : "fabric8",
+        "project" : "rider-auto-backend",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-backend"
+    },
+    "spec" : {
+      "replicas" : 1,
+      "selector" : {
+        "container" : "java",
+        "component" : "rider-auto-backend",
+        "provider" : "fabric8",
+        "project" : "rider-auto-backend",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "template" : {
+        "metadata" : {
+          "annotations" : { },
+          "labels" : {
+            "container" : "java",
+            "component" : "rider-auto-backend",
+            "provider" : "fabric8",
+            "project" : "rider-auto-backend",
+            "version" : "5.0-SNAPSHOT",
+            "group" : "rider-auto"
+          }
+        },
+        "spec" : {
+          "containers" : [ {
+            "args" : [ ],
+            "command" : [ ],
+            "env" : [ {
+              "name" : "KUBERNETES_NAMESPACE",
+              "valueFrom" : {
+                "fieldRef" : {
+                  "fieldPath" : "metadata.namespace"
+                }
+              }
+            } ],
+            "image" : "fabric8/rider-auto-backend:5.0-SNAPSHOT",
+            "name" : "rider-auto-backend",
+            "ports" : [ {
+              "containerPort" : 8778,
+              "name" : "jolokia"
+            } ],
+            "securityContext" : { },
+            "volumeMounts" : [ ]
+          } ],
+          "imagePullSecrets" : [ ],
+          "nodeSelector" : { },
+          "volumes" : [ ]
+        }
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "ReplicationController",
+    "metadata" : {
+      "annotations" : { },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-file",
+        "provider" : "fabric8",
+        "project" : "rider-auto-file",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-file"
+    },
+    "spec" : {
+      "replicas" : 1,
+      "selector" : {
+        "container" : "java",
+        "component" : "rider-auto-file",
+        "provider" : "fabric8",
+        "project" : "rider-auto-file",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "template" : {
+        "metadata" : {
+          "annotations" : { },
+          "labels" : {
+            "container" : "java",
+            "component" : "rider-auto-file",
+            "provider" : "fabric8",
+            "project" : "rider-auto-file",
+            "version" : "5.0-SNAPSHOT",
+            "group" : "rider-auto"
+          }
+        },
+        "spec" : {
+          "containers" : [ {
+            "args" : [ ],
+            "command" : [ ],
+            "env" : [ {
+              "name" : "KUBERNETES_NAMESPACE",
+              "valueFrom" : {
+                "fieldRef" : {
+                  "fieldPath" : "metadata.namespace"
+                }
+              }
+            } ],
+            "image" : "fabric8/rider-auto-file:5.0-SNAPSHOT",
+            "name" : "rider-auto-file",
+            "ports" : [ {
+              "containerPort" : 8778,
+              "name" : "jolokia"
+            } ],
+            "securityContext" : { },
+            "volumeMounts" : [ {
+              "mountPath" : "/deployments/target/placeorder",
+              "name" : "rider-auto-file-volume",
+              "readOnly" : false
+            } ]
+          } ],
+          "imagePullSecrets" : [ ],
+          "nodeSelector" : { },
+          "volumes" : [ {
+            "name" : "rider-auto-file-volume",
+            "persistentVolumeClaim" : {
+              "claimName" : "rider-auto-file-pvc",
+              "readOnly" : false
+            }
+          } ]
+        }
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "ReplicationController",
+    "metadata" : {
+      "annotations" : { },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-normalizer",
+        "provider" : "fabric8",
+        "project" : "rider-auto-normalizer",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-normalizer"
+    },
+    "spec" : {
+      "replicas" : 1,
+      "selector" : {
+        "container" : "java",
+        "component" : "rider-auto-normalizer",
+        "provider" : "fabric8",
+        "project" : "rider-auto-normalizer",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "template" : {
+        "metadata" : {
+          "annotations" : { },
+          "labels" : {
+            "container" : "java",
+            "component" : "rider-auto-normalizer",
+            "provider" : "fabric8",
+            "project" : "rider-auto-normalizer",
+            "version" : "5.0-SNAPSHOT",
+            "group" : "rider-auto"
+          }
+        },
+        "spec" : {
+          "containers" : [ {
+            "args" : [ ],
+            "command" : [ ],
+            "env" : [ {
+              "name" : "KUBERNETES_NAMESPACE",
+              "valueFrom" : {
+                "fieldRef" : {
+                  "fieldPath" : "metadata.namespace"
+                }
+              }
+            } ],
+            "image" : "fabric8/rider-auto-normalizer:5.0-SNAPSHOT",
+            "name" : "rider-auto-normalizer",
+            "ports" : [ {
+              "containerPort" : 8778,
+              "name" : "jolokia"
+            } ],
+            "securityContext" : { },
+            "volumeMounts" : [ ]
+          } ],
+          "imagePullSecrets" : [ ],
+          "nodeSelector" : { },
+          "volumes" : [ ]
+        }
+      }
+    }
+  }, {
+    "apiVersion" : "v1",
+    "kind" : "ReplicationController",
+    "metadata" : {
+      "annotations" : { },
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-ws",
+        "provider" : "fabric8",
+        "project" : "rider-auto-ws",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-ws"
+    },
+    "spec" : {
+      "replicas" : 1,
+      "selector" : {
+        "container" : "java",
+        "component" : "rider-auto-ws",
+        "provider" : "fabric8",
+        "project" : "rider-auto-ws",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "template" : {
+        "metadata" : {
+          "annotations" : { },
+          "labels" : {
+            "container" : "java",
+            "component" : "rider-auto-ws",
+            "provider" : "fabric8",
+            "project" : "rider-auto-ws",
+            "version" : "5.0-SNAPSHOT",
+            "group" : "rider-auto"
+          }
+        },
+        "spec" : {
+          "containers" : [ {
+            "args" : [ ],
+            "command" : [ ],
+            "env" : [ {
+              "name" : "KUBERNETES_NAMESPACE",
+              "valueFrom" : {
+                "fieldRef" : {
+                  "fieldPath" : "metadata.namespace"
+                }
+              }
+            } ],
+            "image" : "fabric8/rider-auto-ws:5.0-SNAPSHOT",
+            "name" : "rider-auto-ws",
+            "ports" : [ {
+              "containerPort" : 8183,
+              "name" : "soap"
+            }, {
+              "containerPort" : 8778,
+              "name" : "jolokia"
+            } ],
+            "securityContext" : { },
+            "volumeMounts" : [ ]
+          } ],
+          "imagePullSecrets" : [ ],
+          "nodeSelector" : { },
+          "volumes" : [ ]
+        }
+      }
+    }
+  } ],
+  "parameters" : [ ]
+}
