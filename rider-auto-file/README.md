@@ -383,6 +383,47 @@ However, we will want to customize this json file a little bit because we want t
   
 ```
   
+### Install a PersistentVolume
+The way Kubernetes works, if you want to store data to the file system in a persistent way, you can mount [Volumes](http://kubernetes.io/v1.1/docs/user-guide/volumes.html) and use [PersistentVolumeClaims](http://kubernetes.io/v1.1/docs/user-guide/persistent-volumes.html) to attach a pod to a volume. Above, we created the PersistentVolumeClaim using the type-safe DSL builders, but before we can spin up the app to use the PersistentVolumeClaim, we need to first establish a PersistentVolume. In general, only cluster admins or project admins will be able to administer the management of PersistentVolumes. 
+ 
+The PersistentVolume definition is located at [src/main/fabric8/vagrant-pv.yaml](src/main/fabric8/vagrant-pv.yaml) and looks like this:
+
+```
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: rider-auto-file-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 100Ki
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: "/opt/camel"
+```
+
+
+So as an cluster or project admin user, you can run the following to create the PersistentVolume:
+
+> oc create -f vagrant-pv.yaml
+
+
+  Note: as a user of the CDK, you can achieve cluster-admin rights by using the config file in /var/lib/origin/openshift.local.config/master/admin.kubeconfig. If you copy this to your ~/.kube/config file or set the location to it in $KUBECONFIG environment variable, you should be granted full cluster-admin rights and should be able to create PVs.
+  
+  
+After you've created the PersistentVolume, you should be able to verify:
+
+```
+[root@localhost ~]# oc get pv
+NAME                 LABELS       CAPACITY   ACCESSMODES   STATUS      CLAIM     REASON    AGE
+rider-auto-file-pv   type=local   100Ki      RWO           Available                       5d
+```
+
+Now we can deploy our app and expect the Claim to be satisfied. Note, in this example, we're using a HostVolume, but in practice that is not advisable.
+  
 We can take that json and "apply" it to a running OpenShift installation. Note that for this plugin to work, you must
 already be logged into openshift with `oc login` and have the following environment variable set:
 
