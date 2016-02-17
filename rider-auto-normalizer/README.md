@@ -38,7 +38,6 @@ For the maven plugin to work, it will need to be able to locate a Docker Daemon 
     export DOCKER_HOST=tcp://10.1.2.2:2376
     export DOCKER_CERT_PATH=/path/to/cdk/.vagrant/machines/default/virtualbox/.docker
     export DOCKER_TLS_VERIFY=1
-    export DOCKER_MACHINE_NAME=ee7ce9e
     
 Note the `DOCKER_HOST` needs to point to the location of the docker daemon, and `DOCKER_CERT_PATH` needs to point to the location of the cert for your docker daemon.
 
