@@ -51,7 +51,7 @@ rider-auto-file-pv   type=local   100Ki      RWO           Available            
 
 The microservices in this project communicate over JMS and use JBoss AMQ. To do this, we should boot up a broker in the `rider-auto` project. In the root of the project, we have a curated `amq.json` file that contains the broker.
 
-> oc create amq.json
+> oc create -f amq.json
 
 ## Builder Docker containers
 
