@@ -92,10 +92,25 @@ Or you can use the template i've included in the root of this project:
 ```
 service "broker-amq-tcp" created
 deploymentconfig "broker-amq" created
-```      
+```
+
+Note: as a user of the CDK, you may need cluster-admin rights by using the config file in /var/lib/origin/openshift.local.config/master/admin.kubeconfig. If you copy this to your ~/.kube/config file or set the location to it in $KUBECONFIG environment variable, you should be granted full cluster-admin rights and should be able to create the AMQ image.  It is best to first login to the vagrant from your host machine:
+
+> vagrant ssh
+
+Then sudo to root
+  
+> sudo -s
+
+Then login to OpenShift using the "system:admin" superuser on a dedicated admin interface (10.0.2.15):
+
+> oc login -u system:admin https://10.0.2.15:8443
+
+Now you can create the AMQ service by running the following command (after copying and pasting the amq.json file to your root directory):
+   
+> oc create -f amq.json
+
 Note that the user name and password need to be `admin/admin` as that's what the rider-auto-osgi project expects.
-
-
 
 ### Install on a local JBoss Fuse 6.2.1 
 
