@@ -441,7 +441,9 @@ Then you should be able to run the following maven command to deploy:
 Note for this to work, you must have run the `docker:build` previously. Or you can combine all of them:
 
 > $  mvn clean install -Pfabric8 -Phawtapp -Pkube-generate docker:build fabric8:apply
-  
+
+(Skip tests can be done with adding `-Dtest=false -DfailIfNoTests=false`)
+
 This command assumes everything is running locally (like on the CDK). Otherwise, if deploying to a centralized openshift
   installation, you can build the docker image locally, then do `docker:push` to get the image up to OpenShift and then run
   the `fabric8:apply` command to deploy the app. 
