@@ -409,9 +409,21 @@ So as an cluster or project admin user, you can run the following to create the 
 
 > oc create -f vagrant-pv.yaml
 
-
-  Note: as a user of the CDK, you can achieve cluster-admin rights by using the config file in /var/lib/origin/openshift.local.config/master/admin.kubeconfig. If you copy this to your ~/.kube/config file or set the location to it in $KUBECONFIG environment variable, you should be granted full cluster-admin rights and should be able to create PVs.
+  Note: as a user of the CDK, you can achieve cluster-admin rights by using the config file in /var/lib/origin/openshift.local.config/master/admin.kubeconfig. If you copy this to your ~/.kube/config file or set the location to it in $KUBECONFIG environment variable, you should be granted full cluster-admin rights and should be able to create PVs.  It is best to first login to the vagrant from your host machine:
   
+  > vagrant ssh
+  
+  Then sudo to root
+  
+  > sudo -s
+  
+  Then login to OpenShift using the "system:admin" superuser on a dedicated admin interface (10.0.2.15):
+  
+  > oc login -u system:admin https://10.0.2.15:8443
+  
+  Now you can create the PersistentVolume by running the following command:
+  
+  > oc create -f vagrant-pv.yaml
   
 After you've created the PersistentVolume, you should be able to verify:
 
