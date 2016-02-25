@@ -36,7 +36,7 @@ public class RiderAutoJsonModelProcessor {
                 .addToLimits("memory", new Quantity("512Mi"))
                 .addToLimits("cpu", new Quantity("100m"))
                 .addToRequests("memory", new Quantity("256Mi"))
-                .addToRequests("cpu", new Quantity("100m"))
+                .addToRequests("cpu", new Quantity("50m"))
                 .endResources()
                 .build();
     }

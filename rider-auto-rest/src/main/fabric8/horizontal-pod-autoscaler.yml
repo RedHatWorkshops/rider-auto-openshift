@@ -1,0 +1,14 @@
+---
+apiVersion: extensions/v1beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rider-auto-rest-autoscaler
+spec:
+  scaleRef:
+    kind: ReplicationController
+    name: rider-auto-rest
+    subresource: scale
+  minReplicas: 1
+  maxReplicas: 3
+  cpuUtilization:
+    targetPercentage: 50
