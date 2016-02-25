@@ -16,12 +16,11 @@
  */
 package org.fusesource.examples.kube;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.ContainerBuilder;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
-import io.fabric8.openshift.api.model.TemplateBuilder;
 
 import javax.inject.Named;
-import java.util.HashMap;
 
 /**
  * Created by ceposta 
@@ -31,7 +30,7 @@ import java.util.HashMap;
 public class RiderAutoJsonModelProcessor {
 
 
-    @Named("rider-auto-ws")
+    @Named("rider-auto-rest")
     public void withResourceLimits(ContainerBuilder builder) {
         builder.withNewResources()
                 .addToLimits("memory", new Quantity("512Mi"))

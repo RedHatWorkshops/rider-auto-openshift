@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+                           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <!-- Set username and password to values you set in etc/user.properties -->
+  <bean id="activemq" class="io.fabric8.mq.camel.AMQComponent" >
+    <property name="connectionFactory" ref="connectionFactory"/>
+    <property name="serviceName" value="broker"/>
+  </bean>
+
+  <bean id="connectionFactory" class="io.fabric8.mq.core.MQConnectionFactory">
+    <property name="userName" value="admin"/>
+    <property name="password" value="admin"/>
+  </bean>
+
+  <bean id="restRouteBuilder" class="org.fusesource.camel.route.RestRouteBuilder"/>
+  <camelContext trace="true" id="rider-auto-rest" xmlns="http://camel.apache.org/schema/spring">
+    <routeBuilder ref="restRouteBuilder"/>
+  </camelContext>
+
+</beans>

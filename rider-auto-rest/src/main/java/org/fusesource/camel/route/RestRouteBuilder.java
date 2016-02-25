@@ -14,32 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.examples.kube;
+package org.fusesource.camel.route;
 
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
-import io.fabric8.openshift.api.model.TemplateBuilder;
-
-import javax.inject.Named;
-import java.util.HashMap;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.rest.RestBindingMode;
 
 /**
  * Created by ceposta 
  * <a href="http://christianposta.com/blog>http://christianposta.com/blog</a>.
  */
-@KubernetesModelProcessor
-public class RiderAutoJsonModelProcessor {
+public class RestRouteBuilder extends RouteBuilder{
+    @Override
+    public void configure() throws Exception {
+        restConfiguration().component("netty-http").host("0.0.0.0").port(8080).bindingMode(RestBindingMode.json)
+                .dataFormatProperty("prettyPrint", "true");
 
-
-    @Named("rider-auto-ws")
-    public void withResourceLimits(ContainerBuilder builder) {
-        builder.withNewResources()
-                .addToLimits("memory", new Quantity("512Mi"))
-                .addToLimits("cpu", new Quantity("100m"))
-                .addToRequests("memory", new Quantity("256Mi"))
-                .addToRequests("cpu", new Quantity("100m"))
-                .endResources()
-                .build();
+        rest("/demo")
+                .get("/").consumes("json/text").produces("json/text")
+                .route().transform(constant(new RestResponseDTO()));
     }
-
 }

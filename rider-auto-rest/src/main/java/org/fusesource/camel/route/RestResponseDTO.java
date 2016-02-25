@@ -14,32 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.examples.kube;
+package org.fusesource.camel.route;
 
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
-import io.fabric8.openshift.api.model.TemplateBuilder;
-
-import javax.inject.Named;
-import java.util.HashMap;
+import java.net.InetAddress;
 
 /**
  * Created by ceposta 
  * <a href="http://christianposta.com/blog>http://christianposta.com/blog</a>.
  */
-@KubernetesModelProcessor
-public class RiderAutoJsonModelProcessor {
+public class RestResponseDTO {
 
+    private long timestamp;
+    private String hostIP;
+    private String hostname;
 
-    @Named("rider-auto-ws")
-    public void withResourceLimits(ContainerBuilder builder) {
-        builder.withNewResources()
-                .addToLimits("memory", new Quantity("512Mi"))
-                .addToLimits("cpu", new Quantity("100m"))
-                .addToRequests("memory", new Quantity("256Mi"))
-                .addToRequests("cpu", new Quantity("100m"))
-                .endResources()
-                .build();
+    public RestResponseDTO() throws Exception{
+        this.timestamp = System.currentTimeMillis();
+        this.hostIP = InetAddress.getLocalHost().getHostAddress();
+        this.hostname = InetAddress.getLocalHost().getHostName();
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public String getHostIP() {
+        return hostIP;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
 }
