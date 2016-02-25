@@ -18,7 +18,7 @@
   </bean>
 
   <bean id="restRouteBuilder" class="org.fusesource.camel.route.RestRouteBuilder"/>
-  <camelContext trace="true" id="rider-auto-rest" xmlns="http://camel.apache.org/schema/spring">
+  <camelContext trace="false" id="rider-auto-rest" xmlns="http://camel.apache.org/schema/spring">
     <routeBuilder ref="restRouteBuilder"/>
   </camelContext>
 
