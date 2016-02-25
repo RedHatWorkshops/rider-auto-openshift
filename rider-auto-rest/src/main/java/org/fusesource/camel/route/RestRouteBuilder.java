@@ -21,6 +21,10 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  * Created by ceposta 
  * <a href="http://christianposta.com/blog>http://christianposta.com/blog</a>.
@@ -36,6 +40,18 @@ public class RestRouteBuilder extends RouteBuilder{
                 .route().process(new Processor() {
             @Override
             public void process(Exchange exchange) throws Exception {
+                // spin the CPU for a bit...
+                byte[] input = "asdflkajsklfsadlkfalksdjflkasdjklfjasldfjalskjflasdjklfajsdlkj".getBytes();
+                byte[] keyBytes = "fooobarr".getBytes();
+                byte[] ivBytes = "fooobarr".getBytes();
+                IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
+                Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+                SecretKeySpec key = new SecretKeySpec(keyBytes, "DES");
+                cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+                byte[] encrypted= new byte[cipher.getOutputSize(input.length)];
+                for (int i = 0; i < 1000000;i++ ) {
+                    cipher.update(input, 0, input.length, encrypted, 0);
+                }
                 exchange.getIn().setBody(new RestResponseDTO());
             }
         });
