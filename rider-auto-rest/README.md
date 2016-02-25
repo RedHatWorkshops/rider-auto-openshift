@@ -254,112 +254,104 @@ The location of the `kubernetes.json` file is in `target/classes/kubernetes.json
         "fabric8.rider-auto-ws/iconUrl" : "https://cdn.rawgit.com/fabric8io/fabric8/master/fabric8-maven-plugin/src/main/resources/icons/camel.svg",
       },
       "labels" : { },
-      "name" : "rider-auto-ws"
+      "name" : "rider-auto-rest"
     },
-    "objects" : [ {
-      "apiVersion" : "v1",
-      "kind" : "Service",
-      "metadata" : {
-        "annotations" : {
-          "prometheus.io/port" : "9779",
-          "prometheus.io/scrape" : "true"
-        },
-        "labels" : {
-          "container" : "java",
-          "component" : "rider-auto-ws",
-          "provider" : "fabric8",
-          "project" : "rider-auto-ws",
-          "version" : "5.0-SNAPSHOT",
-          "group" : "rider-auto"
-        },
-        "name" : "rider-auto-ws"
+  "objects" : [ {
+    "apiVersion" : "v1",
+    "kind" : "Service",
+    "metadata" : {
+      "annotations" : {
+        "prometheus.io/port" : "9779",
+        "prometheus.io/scrape" : "true"
       },
-      "spec" : {
-        "deprecatedPublicIPs" : [ ],
-        "externalIPs" : [ ],
-        "ports" : [ {
-          "port" : 80,
-          "protocol" : "TCP",
-          "targetPort" : 8183
-        } ],
-        "selector" : {
-          "container" : "java",
-          "project" : "rider-auto-ws",
-          "component" : "rider-auto-ws",
-          "provider" : "fabric8",
-          "group" : "rider-auto"
-        }
-      }
-    }, {
-      "apiVersion" : "v1",
-      "kind" : "ReplicationController",
-      "metadata" : {
-        "annotations" : { },
-        "labels" : {
-          "container" : "java",
-          "component" : "rider-auto-ws",
-          "provider" : "fabric8",
-          "project" : "rider-auto-ws",
-          "version" : "5.0-SNAPSHOT",
-          "group" : "rider-auto"
-        },
-        "name" : "rider-auto-ws"
+      "labels" : {
+        "container" : "java",
+        "component" : "rider-auto-rest",
+        "provider" : "fabric8",
+        "project" : "rider-auto-rest",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
       },
-      "spec" : {
-        "replicas" : 1,
-        "selector" : {
-          "container" : "java",
-          "component" : "rider-auto-ws",
-          "provider" : "fabric8",
-          "project" : "rider-auto-ws",
-          "version" : "5.0-SNAPSHOT",
-          "group" : "rider-auto"
-        },
-        "template" : {
-          "metadata" : {
-            "annotations" : { },
-            "labels" : {
-              "container" : "java",
-              "component" : "rider-auto-ws",
-              "provider" : "fabric8",
-              "project" : "rider-auto-ws",
-              "version" : "5.0-SNAPSHOT",
-              "group" : "rider-auto"
-            }
-          },
-          "spec" : {
-            "containers" : [ {
-              "args" : [ ],
-              "command" : [ ],
-              "env" : [ {
-                "name" : "KUBERNETES_NAMESPACE",
-                "valueFrom" : {
-                  "fieldRef" : {
-                    "fieldPath" : "metadata.namespace"
-                  }
-                }
-              } ],
-              "image" : "fabric8/rider-auto-ws:5.0-SNAPSHOT",
-              "name" : "rider-auto-ws",
-              "ports" : [ {
-                "containerPort" : 8183,
-                "name" : "soap"
-              }, {
-                "containerPort" : 8778,
-                "name" : "jolokia"
-              } ],
-              "securityContext" : { },
-              "volumeMounts" : [ ]
-            } ],
-            "imagePullSecrets" : [ ],
-            "nodeSelector" : { },
-            "volumes" : [ ]
+      "name" : "rider-auto-rest"
+    },
+    "spec" : {
+      "deprecatedPublicIPs" : [ ],
+      "externalIPs" : [ ],
+      "ports" : [ {
+        "port" : 80,
+        "protocol" : "TCP",
+        "provider" : "fabric8",
+        "project" : "rider-auto-rest",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "name" : "rider-auto-rest"
+    },
+    "spec" : {
+      "replicas" : 1,
+      "selector" : {
+        "container" : "java",
+        "component" : "rider-auto-rest",
+        "provider" : "fabric8",
+        "project" : "rider-auto-rest",
+        "version" : "5.0-SNAPSHOT",
+        "group" : "rider-auto"
+      },
+      "template" : {
+        "metadata" : {
+          "annotations" : { },
+          "labels" : {
+            "container" : "java",
+            "component" : "rider-auto-rest",
+            "provider" : "fabric8",
+            "project" : "rider-auto-rest",
+            "version" : "5.0-SNAPSHOT",
+            "group" : "rider-auto"
           }
+        },
+        "spec" : {
+          "containers" : [ {
+            "args" : [ ],
+            "command" : [ ],
+            "env" : [ {
+              "name" : "KUBERNETES_NAMESPACE",
+              "valueFrom" : {
+                "fieldRef" : {
+                  "fieldPath" : "metadata.namespace"
+                }
+              }
+            } ],
+            "image" : "fabric8/rider-auto-rest:5.0-SNAPSHOT",
+            "name" : "rider-auto-rest",
+            "ports" : [ {
+              "containerPort" : 8080,
+              "name" : "rest"
+            }, {
+              "containerPort" : 8778,
+              "name" : "jolokia"
+            } ],
+            "resources" : {
+              "limits" : {
+                "cpu" : "100m",
+                "memory" : "64Mi"
+              },
+              "requests" : {
+                "cpu" : "100m",
+                "memory" : "64Mi"
+              }
+            },
+            "securityContext" : { },
+            "volumeMounts" : [ ]
+          } ],
+          "imagePullSecrets" : [ ],
+          "nodeSelector" : { },
+          "volumes" : [ ]
         }
       }
-    } ],
-    "parameters" : [ ]
-  }
+    }
+  } ],
+  "parameters" : [ ]
+}
   
 ```
   
