@@ -420,7 +420,7 @@ already be logged into openshift with `oc login` and have the following environm
 Then you should be able to run the following maven command to deploy:
 
 
-> $  mvn clean install -Pfabric8 fabric8:apply
+> $  mvn clean install -Pfabric8 -Pkube-generate fabric8:apply
 
 Note for this to work, you must have run the `docker:build` previously. Or you can combine all of them:
 

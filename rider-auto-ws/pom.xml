@@ -190,6 +190,19 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
 
   <profiles>
     <profile>
+      <id>kube-generate</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <!--  Use this to modify the kubernetes.json -->
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-generator</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
       <id>fabric8</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -269,6 +282,18 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       </properties>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*ModelProcessor.java</exclude>
+              </excludes>
+              <testExcludes>
+                <exclude>**/*KT.java</exclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.apache.karaf.tooling</groupId>
             <artifactId>karaf-maven-plugin</artifactId>
@@ -361,6 +386,18 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
       </properties>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*ModelProcessor.java</exclude>
+              </excludes>
+              <testExcludes>
+                <exclude>**/*KT.java</exclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.jolokia</groupId>
             <artifactId>docker-maven-plugin</artifactId>
