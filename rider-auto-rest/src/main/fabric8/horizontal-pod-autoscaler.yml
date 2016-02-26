@@ -7,6 +7,7 @@ spec:
   scaleRef:
     kind: ReplicationController
     name: rider-auto-rest
+    apiVersion: v1
     subresource: scale
   minReplicas: 1
   maxReplicas: 3
