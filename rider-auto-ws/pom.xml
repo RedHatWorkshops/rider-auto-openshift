@@ -213,11 +213,11 @@ and the feature repo itself is not added in etc/org.apache.karaf.features.cfg fi
 
         <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
         <fabric8.metrics.port>9779</fabric8.metrics.port>
-        <docker.port.container.soap>8183</docker.port.container.soap>
+        <docker.port.container.soap>8080</docker.port.container.soap>
 
         <fabric8.service.name>${project.artifactId}</fabric8.service.name>
         <fabric8.service.port>80</fabric8.service.port>
-        <fabric8.service.containerPort>8183</fabric8.service.containerPort>
+        <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
         <fabric8.label.component>${project.artifactId}</fabric8.label.component>
         <fabric8.label.container>java</fabric8.label.container>

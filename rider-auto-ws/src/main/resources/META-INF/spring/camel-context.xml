@@ -18,7 +18,7 @@
   </bean>
 
   <cxf:cxfEndpoint id="orderEndpoint"
-                   address="http://0.0.0.0:8183/cxf/order"
+                   address="http://0.0.0.0:8080/cxf/order"
                    serviceClass="org.fusesource.camel.ws.OrderEndpoint"/>
 
   <camelContext trace="true" id="rider-auto-ws" xmlns="http://camel.apache.org/schema/spring">

@@ -20,11 +20,11 @@ You should be able to run this locally using mvn, and it should work as expected
 
 You can then test that it works by using a SOAP tool, or hitting it in a web browser:
 
-> http://localhost:8183/cxf/order?wsdl
+> http://localhost:8080/cxf/order?wsdl
 
 You should end up with the WSDL returned:
 
-    ceposta@postamac(~) $ curl http://localhost:8183/cxf/order?wsdl
+    ceposta@postamac(~) $ curl http://localhost:8080/cxf/order?wsdl
     <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.camel.fusesource.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="OrderEndpointService" targetNamespace="http://ws.camel.fusesource.org/">
       <wsdl:types>
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ws.camel.fusesource.org/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.camel.fusesource.org/">
@@ -69,7 +69,7 @@ You should end up with the WSDL returned:
       </wsdl:binding>
       <wsdl:service name="OrderEndpointService">
         <wsdl:port binding="tns:OrderEndpointServiceSoapBinding" name="OrderEndpointPort">
-          <soap:address location="http://localhost:8183/cxf/order"/>
+          <soap:address location="http://localhost:8080/cxf/order"/>
         </wsdl:port>
       </wsdl:service>
     </wsdl:definitions>    
@@ -172,10 +172,10 @@ Now if you do a `docker images` you should see your new docker image:
 
 You can even try to run you docker container as is and map the ports locally so you can see the service running within the docker image:
 
-> docker run -it --rm -p 8183:8183 fabric8/rider-auto-ws:5.0-SNAPSHOT
-> curl http://localhost:8183/cxf/order?wsdl
+> docker run -it --rm -p 8080:8080 fabric8/rider-auto-ws:5.0-SNAPSHOT
+> curl http://localhost:8080/cxf/order?wsdl
 
-Note for that to work, we need to have the guest VM map port 8183 to the host VM.
+Note for that to work, we need to have the guest VM map port 8080 to the host VM.
 
 Yay! You now have your microservice packaged as a docker image ready to go. Let's take a look at what that looks like if you want to build the karaf-based microservice:
 
@@ -255,10 +255,10 @@ Now if you do a `docker images` you should see your new docker image:
   
 You can even try to run you docker container as is and map the ports locally so you can see the service running within the docker image:
 
-> docker run -it --rm -p 8183:8183 fabric8/rider-auto-ws:5.0-SNAPSHOT
-> curl http://localhost:8183/cxf/order?wsdl
+> docker run -it --rm -p 8080:8080 fabric8/rider-auto-ws:5.0-SNAPSHOT
+> curl http://localhost:8080/cxf/order?wsdl
 
-Note for that to work, we need to have the guest VM map port 8183 to the host VM.
+Note for that to work, we need to have the guest VM map port 8080 to the host VM.
 
 ## Deploying to OpenShift
 
@@ -272,11 +272,11 @@ For example:
   
           <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
           <fabric8.metrics.port>9779</fabric8.metrics.port>
-          <docker.port.container.soap>8183</docker.port.container.soap>
+          <docker.port.container.soap>8080</docker.port.container.soap>
   
           <fabric8.service.name>${project.artifactId}</fabric8.service.name>
           <fabric8.service.port>80</fabric8.service.port>
-          <fabric8.service.containerPort>8183</fabric8.service.containerPort>
+          <fabric8.service.containerPort>8080</fabric8.service.containerPort>
   
           <fabric8.label.component>${project.artifactId}</fabric8.label.component>
           <fabric8.label.container>java</fabric8.label.container>
@@ -325,7 +325,7 @@ The location of the `kubernetes.json` file is in `target/classes/kubernetes.json
         "ports" : [ {
           "port" : 80,
           "protocol" : "TCP",
-          "targetPort" : 8183
+          "targetPort" : 8080
         } ],
         "selector" : {
           "container" : "java",
@@ -387,7 +387,7 @@ The location of the `kubernetes.json` file is in `target/classes/kubernetes.json
               "image" : "fabric8/rider-auto-ws:5.0-SNAPSHOT",
               "name" : "rider-auto-ws",
               "ports" : [ {
-                "containerPort" : 8183,
+                "containerPort" : 8080,
                 "name" : "soap"
               }, {
                 "containerPort" : 8778,
