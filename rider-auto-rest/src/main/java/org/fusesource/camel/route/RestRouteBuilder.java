@@ -49,7 +49,7 @@ public class RestRouteBuilder extends RouteBuilder{
                 SecretKeySpec key = new SecretKeySpec(keyBytes, "DES");
                 cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
                 byte[] encrypted= new byte[cipher.getOutputSize(input.length)];
-                for (int i = 0; i < 1000000;i++ ) {
+                for (int i = 0; i < 1000;i++ ) {
                     cipher.update(input, 0, input.length, encrypted, 0);
                 }
                 exchange.getIn().setBody(new RestResponseDTO());
