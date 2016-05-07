@@ -122,12 +122,34 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+		<repository>
+			<id>public jboss</id>
+			<name>JBoss Release Repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>fuse-releases</id>
 			<name>JBoss Fuse Release Repository</name>
 			<url>https://repository.jboss.org/nexus/content/repositories/fs-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>public jboss</id>
+			<name>JBoss Release Repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
