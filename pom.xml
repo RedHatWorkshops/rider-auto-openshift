@@ -106,6 +106,10 @@
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.10</version>
 				</plugin>
+				<plugin>
+        				<groupId>io.fabric8</groupId>
+        				<artifactId>fabric8-maven-plugin</artifactId>
+      				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
