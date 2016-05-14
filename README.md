@@ -141,6 +141,28 @@ Note that the user name and password need to be `admin/admin` as that's what the
 4) To test the WS, use your favorite WS tool (e.g. SoapUI) against the following
    WSDL hosted by the rider-auto-ws bundle.
    * http://localhost:8182/cxf/order?wsdl
+   * 
+
+5) To test the File poller, run the following commands:
+
+> oc get pods
+
+```
+NAME                          READY     STATUS    RESTARTS   AGE
+broker-amq-1-b5o3b            1/1       Running   0          7h
+rider-auto-backend-as08q      1/1       Running   0          7h
+rider-auto-file-yynee         1/1       Running   0          14m
+rider-auto-normalizer-zqav5   1/1       Running   0          7h
+rider-auto-ws-xa8qx           1/1       Running   0          7h
+```
+
+> oc rsh rider-auto-file-yynee
+
+Note: Please replace 'yynee' with your corresponding ID
+
+> cd /deployments/target/placeorder/
+
+Create a file (either XML or CSV) in the above directory using sample data taken from rider-auto-common/src/data/
 
 Getting Help
 ============================
